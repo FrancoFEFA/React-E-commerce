@@ -341,3 +341,367 @@
     font-size: 1.1rem;
   }
 }
+
+/* ===========================
+   ESTILOS DE LA GRILLA DE PRODUCTOS
+   =========================== */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Tarjeta individual de producto en el catálogo */
+.product-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-light);
+}
+
+.product-emoji {
+  font-size: 3.5rem;
+  transition: transform var(--transition-bounce);
+}
+
+.product-card:hover .product-emoji {
+  transform: scale(1.15);
+}
+
+.product-name {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.product-link {
+  margin-top: 4px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-normal);
+}
+
+.product-link:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===========================
+   ESTILOS DE LA VISTA DE DETALLE
+   =========================== */
+
+.product-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.product-detail-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  padding: 24px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+}
+
+.product-detail-image span {
+  font-size: 8rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.product-detail-info {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-detail-name {
+  font-family: "Outfit", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.product-detail-description {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.product-detail-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.product-detail-stock {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+/* ===========================
+   ESTILOS DEL CONTADOR (ItemCount)
+   =========================== */
+
+.item-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.item-count-label {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.item-count-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.item-count-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+}
+
+.item-count-btn:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+  transform: scale(1.08);
+}
+
+.item-count-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.item-count-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 36px;
+  text-align: center;
+}
+
+.item-count-add {
+  margin-top: 8px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.item-count-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+}
+
+.item-count-add:active {
+  transform: translateY(0);
+}
+
+/* ===========================
+   ESTADOS DE CARGA Y ERROR
+   =========================== */
+
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30vh;
+  text-align: center;
+}
+
+.loading-text {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.error-text {
+  color: #e53935;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 16px 24px;
+  background: #fce4ec;
+  border-radius: var(--radius-sm);
+}
+
+/* ===========================
+   TÍTULO DE CATEGORÍA
+   =========================== */
+
+.category-title {
+  text-align: center;
+  margin-bottom: 8px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.category-title h2 {
+  font-family: "Outfit", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: capitalize;
+}
+
+/* ===========================
+   PÁGINA 404
+   =========================== */
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 48px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.not-found-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.not-found-code {
+  font-family: "Outfit", sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.not-found-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.not-found-message {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.not-found-link {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.not-found-link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===========================
+   RESPONSIVO ADICIONAL
+   =========================== */
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .product-detail {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .product-detail-image span {
+    font-size: 5rem;
+  }
+
+  .product-detail-name {
+    font-size: 1.5rem;
+  }
+
+  .product-detail-price {
+    font-size: 1.6rem;
+  }
+}

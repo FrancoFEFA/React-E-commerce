@@ -1,4 +1,9 @@
-// Componente de navegación principal con logo, enlaces y carrito
+/*
+ * Barra de navegación principal con logo, enlaces de categorías y carrito
+ * Usa NavLink de React Router en lugar de <a> para navegación sin recarga
+ * La clase .active se aplica automáticamente al enlace de la página actual
+ */
+import { Link, NavLink } from 'react-router-dom';
 import CartWidget from "./CartWidget";
 import logo from "../assets/logo.png";
 
@@ -6,38 +11,53 @@ const NavBar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo de la tienda */}
-        <a href="/" className="navbar-brand">
+        {/* Logo de la tienda: redirige al inicio usando Link de React Router */}
+        <Link to="/" className="navbar-brand">
           <img src={logo} alt="Verdulería Fresh Logo" className="navbar-logo" />
           <span className="navbar-title">Verdulería Fresh</span>
-        </a>
+        </Link>
 
-        {/* Navegación por categorías de productos */}
+        {/* Menú de navegación con NavLink a cada categoría */}
         <ul className="navbar-links">
           <li>
-            <a href="/categoria/frutas" className="nav-link">
+            <NavLink
+              to="/category/frutas"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
               Frutas
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="/categoria/verduras" className="nav-link">
+            <NavLink
+              to="/category/verduras"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
               Verduras
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="/categoria/lacteos" className="nav-link">
+            <NavLink
+              to="/category/lacteos"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
               Lácteos
-            </a>
+            </NavLink>
           </li>
           <li>
-            <a href="/categoria/bebidas" className="nav-link">
+            <NavLink
+              to="/category/bebidas"
+              className={({ isActive }) =>
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
               Bebidas
-            </a>
-          </li>
-          <li>
-            <a href="/categoria/ofertas" className="nav-link">
-              Ofertas
-            </a>
+            </NavLink>
           </li>
         </ul>
 
