@@ -7,8 +7,9 @@
  */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProducts, getProductsByCategory } from '../data/products';
+import { getProducts, getProductsByCategory, getCategories } from '../data/products';
 import ItemList from './ItemList';
+import CategoryFilter from './CategoryFilter';
 
 const ItemListContainer = ({ greeting }) => {
   // Estado para almacenar los productos obtenidos de la promesa
@@ -17,6 +18,10 @@ const ItemListContainer = ({ greeting }) => {
   const [loading, setLoading] = useState(true);
   // Estado de error para categorías inexistentes o fallos de la promesa
   const [error, setError] = useState(null);
+  // Estado para el filtro local de categorías en la ruta raíz
+  const [selectedFilter, setSelectedFilter] = useState('todas');
+  // Estado con las categorías disponibles para el filtro de inicio
+  const [categories, setCategories] = useState([]);
 
   // Extrae el parámetro categoryId de la URL (undefined en la ruta raíz)
   const { categoryId } = useParams();
@@ -87,35 +92,53 @@ const ItemListContainer = ({ greeting }) => {
     };
   }, [categoryId]); // Dependencia: se re-ejecuta al cambiar la categoría
 
+  /*
+   * Efecto que carga las categorías disponibles solo en la ruta raíz
+   * Se usa para renderizar el filtro local del inicio
+   */
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!categoryId) {
+      getCategories()
+        .then((data) => {
+          if (!cancelled) setCategories(data);
+        })
+        .catch((err) => console.error(err));
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [categoryId]);
+
+  // En la ruta raíz, si hay un filtro seleccionado, se aplica localmente
+  const displayProducts =
+    !categoryId && selectedFilter !== 'todas'
+      ? products.filter((product) => product.category === selectedFilter)
+      : products;
+
   return (
     <div className="item-list-container">
       {/* Sección de bienvenida: solo se muestra en la ruta raíz */}
       {greeting && !categoryId && (
         <div className="welcome-section">
-          <div className="welcome-icon">🥬</div>
+          <div className="welcome-icon">ImgEj</div>
           <h1 className="welcome-title">{greeting}</h1>
           <p className="welcome-subtitle">
             Frutas y verduras frescas directo del campo a tu mesa. Calidad,
             frescura y los mejores precios todos los días.
           </p>
-          <div className="welcome-features">
-            <div className="feature-card">
-              <span className="feature-icon">🚚</span>
-              <h3>Envío Gratis</h3>
-              <p>En compras mayores a $5.000</p>
-            </div>
-            <div className="feature-card">
-              <span className="feature-icon">🌱</span>
-              <h3>100% Frescos</h3>
-              <p>Productos del día seleccionados</p>
-            </div>
-            <div className="feature-card">
-              <span className="feature-icon">💰</span>
-              <h3>Mejores Precios</h3>
-              <p>Ofertas exclusivas online</p>
-            </div>
-          </div>
         </div>
+      )}
+
+      {/* Filtro local de categorías: solo en la ruta raíz */}
+      {!categoryId && !loading && !error && categories.length > 0 && (
+        <CategoryFilter
+          categories={categories}
+          selected={selectedFilter}
+          onSelect={setSelectedFilter}
+        />
       )}
 
       {/* Título de categoría: se muestra al navegar por una categoría específica */}
@@ -140,7 +163,7 @@ const ItemListContainer = ({ greeting }) => {
       )}
 
       {/* Éxito: renderiza la grilla de productos usando el componente presentacional */}
-      {!loading && !error && <ItemList products={products} />}
+      {!loading && !error && <ItemList products={displayProducts} />}
     </div>
   );
 };

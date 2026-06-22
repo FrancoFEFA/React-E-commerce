@@ -1,8 +1,10 @@
 /*
  * Datos mock del catálogo de productos
  * Cada producto tiene id, nombre, categoría, precio, stock, descripción y emoji
- * Las categorías coinciden con los enlaces del NavBar
+ * Las categorías se definen una sola vez para evitar duplicación entre componentes
  */
+export const categories = ['frutas', 'verduras', 'lacteos', 'bebidas'];
+
 const products = [
   // ---- Frutas ----
   {
@@ -142,6 +144,18 @@ export const getProducts = () => {
     setTimeout(() => {
       resolve(products);
     }, 1500);
+  });
+};
+
+/*
+ * Devuelve un array con las categorías disponibles en el catálogo
+ * Usa la constante exportada para mantener una única fuente de verdad
+ */
+export const getCategories = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(categories);
+    }, 500);
   });
 };
 

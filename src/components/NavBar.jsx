@@ -6,6 +6,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import CartWidget from "./CartWidget";
 import logo from "../assets/logo.png";
+import { categories } from '../data/products';
 
 const NavBar = () => {
   return (
@@ -19,46 +20,18 @@ const NavBar = () => {
 
         {/* Menú de navegación con NavLink a cada categoría */}
         <ul className="navbar-links">
-          <li>
-            <NavLink
-              to="/category/frutas"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? 'active' : ''}`
-              }
-            >
-              Frutas
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/verduras"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? 'active' : ''}`
-              }
-            >
-              Verduras
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/lacteos"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? 'active' : ''}`
-              }
-            >
-              Lácteos
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/category/bebidas"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? 'active' : ''}`
-              }
-            >
-              Bebidas
-            </NavLink>
-          </li>
+          {categories.map((category) => (
+            <li key={category}>
+              <NavLink
+                to={`/category/${category}`}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? 'active' : ''}`
+                }
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </NavLink>
+            </li>
+          ))}
         </ul>
 
         {/* Widget del carrito dentro de la barra de navegación */}

@@ -233,51 +233,6 @@
   line-height: 1.7;
 }
 
-/* Feature Cards */
-.welcome-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.feature-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px;
-  text-align: center;
-  transition: all var(--transition-normal);
-  cursor: default;
-}
-
-.feature-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary-light);
-}
-
-.feature-icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 16px;
-}
-
-.feature-card h3 {
-  font-family: "Outfit", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-text);
-  margin-bottom: 8px;
-}
-
-.feature-card p {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  line-height: 1.5;
-}
-
 /* ===========================
    ANIMACIONES
    =========================== */
@@ -321,10 +276,6 @@
     padding: 40px 16px 60px;
   }
 
-  .welcome-features {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -678,6 +629,59 @@
 }
 
 /* ===========================
+   FILTRO DE CATEGORÍAS EN INICIO
+   =========================== */
+
+.category-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.category-filter-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.category-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.category-filter-btn {
+  padding: 10px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.category-filter-btn:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.category-filter-btn.active {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===========================
    RESPONSIVO ADICIONAL
    =========================== */
 
@@ -703,5 +707,14 @@
 
   .product-detail-price {
     font-size: 1.6rem;
+  }
+
+  .category-filter-buttons {
+    gap: 8px;
+  }
+
+  .category-filter-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
   }
 }
