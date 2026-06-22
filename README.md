@@ -1,3 +1,14 @@
+# Verduleria Ecommerce
+
+Aplicacion e-commerce de verduleria construida con React + Vite.
+
+## Como iniciar
+
+1. Clonar el repositorio
+2. Instalar dependencias con `npm install`
+3. Ejecutar `npm run dev`
+4. Abrir en el navegador `http://localhost:5173`
+
 ## Funcionalidades implementadas
 
 *Luego de la primera entrega, le agregue las siguientes implementaciones sobre el mismo proyecto
