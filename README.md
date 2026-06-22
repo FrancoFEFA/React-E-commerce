@@ -1,6 +1,6 @@
 # Verduleria Ecommerce
 
-Aplicacion e-commerce de verduleria construida con React + Vite.
+Aplicacion e-commerce de verduleria construida entrega 2
 
 ## Como iniciar
 
