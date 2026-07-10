@@ -4,7 +4,7 @@
  * Evita refetcheos innecesarios al navegar entre categorías ya visitadas
  * Única fuente de verdad para categorías (NavBar e ItemListContainer consumen de aquí)
  */
-import { createContext, useState, useEffect, useRef } from 'react';
+import { createContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   getProducts,
   getProductsByCategory,
@@ -50,8 +50,9 @@ export const ProductsProvider = ({ children }) => {
    * Devuelve todos los productos
    * Si ya están en caché, los setea sin llamar a la promesa (instantáneo)
    * Si no, llama a getProducts(), los cachea y actualiza el estado
+   * useCallback: identidad estable para no re-disparar efectos consumidores
    */
-  const getAllProducts = () => {
+  const getAllProducts = useCallback(() => {
     // Hit de caché: no hay fetch, no hay loading
     if (cacheAll.current) {
       setProducts(cacheAll.current);
@@ -74,14 +75,15 @@ export const ProductsProvider = ({ children }) => {
         console.error(err);
       })
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   /*
    * Devuelve los productos filtrados por categoría
    * Cachea por categoría: una categoría ya vista se sirve instantáneamente
    * Si la categoría no tiene productos, setea error
+   * useCallback: identidad estable para no re-disparar efectos consumidores
    */
-  const getProductsByCategoryCached = (categoryId) => {
+  const getProductsByCategoryCached = useCallback((categoryId) => {
     // Hit de caché: la categoría ya fue cargada antes
     if (cacheByCategory.current[categoryId]) {
       const cached = cacheByCategory.current[categoryId];
@@ -118,15 +120,16 @@ export const ProductsProvider = ({ children }) => {
         console.error(err);
       })
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   /*
    * Devuelve una Promise con un producto por su id
    * Mantiene la firma de promesa para que ItemDetailContainer conserve su
    * lógica de race condition (bandera cancelled)
    * Si está en caché, resuelve inmediatamente sin llamar a la promesa
+   * useCallback: identidad estable para no re-disparar efectos consumidores
    */
-  const getProductByIdCached = (itemId) => {
+  const getProductByIdCached = useCallback((itemId) => {
     const key = parseInt(itemId);
 
     // Hit de caché: resuelve instantáneo con el producto cacheado
@@ -141,18 +144,26 @@ export const ProductsProvider = ({ children }) => {
       }
       return data;
     });
-  };
+  }, []);
 
-  // Value expuesto a los consumidores del contexto
-  const value = {
-    products,
-    categories,
-    loading,
-    error,
-    getAllProducts,
-    getProductsByCategoryCached,
-    getProductByIdCached,
-  };
+  /*
+   * Value expuesto a los consumidores del contexto
+   * useMemo: el objeto value solo se recrea cuando cambian los estados reactivos
+   * Las funciones useCallback son estables, así que el value cambia solo
+   * cuando products/categories/loading/error cambian
+   */
+  const value = useMemo(
+    () => ({
+      products,
+      categories,
+      loading,
+      error,
+      getAllProducts,
+      getProductsByCategoryCached,
+      getProductByIdCached,
+    }),
+    [products, categories, loading, error, getAllProducts, getProductsByCategoryCached, getProductByIdCached]
+  );
 
   return (
     <ProductsContext.Provider value={value}>
