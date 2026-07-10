@@ -1,116 +1,46 @@
 /*
  * Componente contenedor del listado de productos
- * Maneja el estado, los efectos secundarios y las llamadas asíncronas
+ * Consume el ProductsContext para obtener productos, categorías y estados
  * Usa useParams() para leer el parámetro :categoryId de la URL
  * En la ruta raíz muestra la sección de bienvenida + catálogo completo
  * En rutas de categoría filtra los productos correspondientes
+ * El filtro local (selectedFilter) es estado de UI y queda local, no en contexto
  */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProducts, getProductsByCategory, getCategories } from '../data/products';
+import { useProducts } from '../context/useProducts';
 import ItemList from './ItemList';
 import CategoryFilter from './CategoryFilter';
 
 const ItemListContainer = ({ greeting }) => {
-  // Estado para almacenar los productos obtenidos de la promesa
-  const [products, setProducts] = useState([]);
-  // Estado de carga: true mientras la promesa no se resuelve
-  const [loading, setLoading] = useState(true);
-  // Estado de error para categorías inexistentes o fallos de la promesa
-  const [error, setError] = useState(null);
-  // Estado para el filtro local de categorías en la ruta raíz
+  // Filtro local de categoría en la ruta raíz: es estado de UI, no compartido
   const [selectedFilter, setSelectedFilter] = useState('todas');
-  // Estado con las categorías disponibles para el filtro de inicio
-  const [categories, setCategories] = useState([]);
+
+  // Consumo del contexto del catálogo
+  const {
+    products,
+    categories,
+    loading,
+    error,
+    getAllProducts,
+    getProductsByCategoryCached,
+  } = useProducts();
 
   // Extrae el parámetro categoryId de la URL (undefined en la ruta raíz)
   const { categoryId } = useParams();
 
   /*
    * Efecto que se ejecuta cada vez que cambia categoryId en la URL
-   * categoryId en el array de dependencias asegura que se actualice al navegar
-   *
-   * La bandera cancelled previene una race condition (condición de carrera):
-   * si el usuario cambia de categoría antes de que termine el setTimeout,
-   * la respuesta de la primera promesa se ignora y no pisa el estado nuevo.
+   * Delega la lógica de fetch y caché al contexto
+   * Solo decide qué método del contexto invocar según haya o no categoría
    */
   useEffect(() => {
-    let cancelled = false;
-
     if (categoryId) {
-      // Si hay categoría en la URL, filtra productos por esa categoría
-      getProductsByCategory(categoryId)
-        .then((data) => {
-          if (cancelled) return;
-          // Si el array está vacío, la categoría no tiene productos
-          if (data.length === 0) {
-            setProducts([]);
-            setError(
-              `No se encontraron productos para la categoría "${categoryId}".`
-            );
-          } else {
-            setProducts(data);
-            setError(null);
-          }
-        })
-        .catch((err) => {
-          if (cancelled) return;
-          setProducts([]);
-          setError('Ocurrió un error al cargar los productos.');
-          console.error(err);
-        })
-        .finally(() => {
-          if (!cancelled) setLoading(false);
-        });
+      getProductsByCategoryCached(categoryId);
     } else {
-      // Si no hay categoría (ruta raíz), carga todos los productos
-      getProducts()
-        .then((data) => {
-          if (cancelled) return;
-          setProducts(data);
-          setError(null);
-        })
-        .catch((err) => {
-          if (cancelled) return;
-          setProducts([]);
-          setError('Ocurrió un error al cargar los productos.');
-          console.error(err);
-        })
-        .finally(() => {
-          if (!cancelled) setLoading(false);
-        });
+      getAllProducts();
     }
-
-    /*
-     * Cleanup del efecto: se ejecuta antes de que el efecto se vuelva a correr
-     * o cuando el componente se desmonta. Al poner cancelled = true evitamos una
-     * race condition: si el usuario navega a otra categoría antes de que la
-     * promesa responda, la promesa vieja no sobrescribirá el nuevo listado.
-     */
-    return () => {
-      cancelled = true;
-    };
-  }, [categoryId]); // Dependencia: se re-ejecuta al cambiar la categoría
-
-  /*
-   * Efecto que carga las categorías disponibles solo en la ruta raíz
-   * Se usa para renderizar el filtro local del inicio
-   */
-  useEffect(() => {
-    let cancelled = false;
-
-    if (!categoryId) {
-      getCategories()
-        .then((data) => {
-          if (!cancelled) setCategories(data);
-        })
-        .catch((err) => console.error(err));
-    }
-
-    return () => {
-      cancelled = true;
-    };
-  }, [categoryId]);
+  }, [categoryId, getAllProducts, getProductsByCategoryCached]);
 
   // En la ruta raíz, si hay un filtro seleccionado, se aplica localmente
   const displayProducts =

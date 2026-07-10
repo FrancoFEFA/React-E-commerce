@@ -4,10 +4,13 @@
  * Los botones se deshabilitan visualmente al alcanzar los límites
  */
 import { useState } from 'react';
+import { useCart } from '../context/useCart';
 
-const ItemCount = ({ stock, initial = 1 }) => {
+const ItemCount = ({ product, stock, initial = 1, onAdd }) => {
   // Estado local para la cantidad seleccionada por el usuario
   const [count, setCount] = useState(initial);
+  // Acceso al contexto del carrito para agregar items
+  const { addItem } = useCart();
 
   /*
    * Incrementa el contador en 1, sin superar el stock máximo disponible
@@ -56,12 +59,17 @@ const ItemCount = ({ stock, initial = 1 }) => {
         </button>
       </div>
 
-      {/* Botón para confirmar la acción (funcionalidad completa en futuras entregas) */}
+      {/*
+        Botón para confirmar la acción:
+        agrega el item al carrito via contexto y notifica al padre (ItemDetail)
+        con la cantidad solicitada, para que cambie la vista
+      */}
       <button
         className="item-count-add"
-        onClick={() =>
-          alert(`Agregaste ${count} unidad(es) al carrito.`)
-        }
+        onClick={() => {
+          addItem(product, count);
+          if (onAdd) onAdd(count);
+        }}
       >
         Agregar al carrito
       </button>

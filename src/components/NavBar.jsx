@@ -6,9 +6,12 @@
 import { Link, NavLink } from 'react-router-dom';
 import CartWidget from "./CartWidget";
 import logo from "../assets/logo.png";
-import { categories } from '../data/products';
+import { useProducts } from '../context/useProducts';
 
 const NavBar = () => {
+  // Categorías desde el contexto: única fuente de verdad para NavBar y filtros
+  const { categories } = useProducts();
+
   return (
     <nav className="navbar">
       <div className="navbar-container">

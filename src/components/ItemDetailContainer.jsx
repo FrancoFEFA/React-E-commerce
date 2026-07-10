@@ -6,7 +6,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../data/products';
+import { useProducts } from '../context/useProducts';
 import ItemDetail from './ItemDetail';
 
 const ItemDetailContainer = () => {
@@ -20,9 +20,12 @@ const ItemDetailContainer = () => {
   // Extrae el parámetro itemId de la URL actual
   const { itemId } = useParams();
 
+  // Método del contexto: devuelve una Promise (con caché) para conservar el flujo
+  const { getProductByIdCached } = useProducts();
+
   /*
    * Efecto que se dispara cuando cambia itemId en la URL
-   * Realiza la llamada asíncrona para obtener el producto correspondiente
+   * Llama al método del contexto que cachea el producto
    *
    * La bandera cancelled previene una race condition (condición de carrera):
    * si el usuario hace clic en otro producto antes de que termine el setTimeout,
@@ -31,7 +34,7 @@ const ItemDetailContainer = () => {
   useEffect(() => {
     let cancelled = false;
 
-    getProductById(itemId)
+    getProductByIdCached(itemId)
       .then((data) => {
         if (cancelled) return;
         // Si no se encuentra el producto, se marca como error
@@ -62,7 +65,7 @@ const ItemDetailContainer = () => {
     return () => {
       cancelled = true;
     };
-  }, [itemId]); // Dependencia: se re-ejecuta si cambia el ID del producto en la URL
+  }, [itemId, getProductByIdCached]); // Dependencia: se re-ejecuta al cambiar el ID
 
   return (
     <div className="item-list-container">
