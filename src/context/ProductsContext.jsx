@@ -191,6 +191,20 @@ export const ProductsProvider = ({ children }) => {
     });
   }, []);
 
+  /*
+   * Invalida todos los cachés del contexto
+   * Se usa cuando el admin crea/edita/elimina un producto para que
+   * la home y las vistas de categoría reflejen los cambios
+   */
+  const invalidateAllCaches = useCallback(() => {
+    cacheAll.current = null;
+    cacheByCategory.current = {};
+    cacheById.current = {};
+    lastDocAll.current = null;
+    lastDocByCategory.current = {};
+    activeCategory.current = null;
+  }, []);
+
   // Value memoizado: solo cambia cuando los estados reactivos cambian
   const value = useMemo(
     () => ({
@@ -204,8 +218,9 @@ export const ProductsProvider = ({ children }) => {
       getProductsByCategoryCached,
       loadMoreByCategory,
       getProductByIdCached,
+      invalidateAllCaches,
     }),
-    [products, categories, loading, error, hasMore, getAllProducts, loadMoreProducts, getProductsByCategoryCached, loadMoreByCategory, getProductByIdCached]
+    [products, categories, loading, error, hasMore, getAllProducts, loadMoreProducts, getProductsByCategoryCached, loadMoreByCategory, getProductByIdCached, invalidateAllCaches]
   );
 
   return (

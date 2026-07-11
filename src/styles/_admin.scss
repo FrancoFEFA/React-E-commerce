@@ -200,3 +200,127 @@
     cursor: not-allowed;
   }
 }
+
+// Controles bulk + buscador
+.admin-bulk-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-bulk-toggle-btn {
+  padding: 10px 20px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  &.active {
+    background: #fce4ec;
+    border-color: #e53935;
+    color: #e53935;
+  }
+}
+
+.admin-bulk-toggle-btn:disabled,
+.admin-bulk-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-bulk-save-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    @include m.lift;
+  }
+}
+
+// Campos de edición rápida inline
+.admin-bulk-fields {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-bulk-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-bulk-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.admin-bulk-input {
+  width: 70px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+.admin-bulk-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+// Buscador del panel admin
+.admin-search-input {
+  flex: 1;
+  min-width: 180px;
+  max-width: 280px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-family: "Inter", sans-serif;
+  background: var(--color-surface);
+  transition: all var(--transition-normal);
+
+  &:focus {
+    @include m.input-focus;
+  }
+}
+
+.admin-search-clear {
+  padding: 8px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-text-muted);
+  }
+}

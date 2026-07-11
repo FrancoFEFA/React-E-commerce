@@ -8,47 +8,10 @@ import { useState, useEffect } from 'react';
 import {
   updateProduct,
   deleteProduct,
+  CATEGORIES,
 } from '../services/firebase/productsService';
 import { useProducts } from '../context/useProducts';
-
-// Categorías disponibles (misma fuente que productsService)
-const CATEGORIES = ['frutas', 'verduras', 'bebidas', 'otros'];
-
-// Tamaño máximo de archivo y base64
-const MAX_FILE_SIZE = 2 * 1024 * 1024;
-const MAX_BASE64_SIZE = 900 * 1024;
-
-const fileToCompressedBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const SIZE = 400;
-        canvas.width = SIZE;
-        canvas.height = SIZE;
-        const ctx = canvas.getContext('2d');
-        const scale = Math.max(SIZE / img.width, SIZE / img.height);
-        const w = img.width * scale;
-        const h = img.height * scale;
-        const x = (SIZE - w) / 2;
-        const y = (SIZE - h) / 2;
-        ctx.drawImage(img, x, y, w, h);
-        const base64 = canvas.toDataURL('image/jpeg', 0.7);
-        if (base64.length > MAX_BASE64_SIZE) {
-          reject(new Error('Imagen muy grande. Usá una más chica.'));
-          return;
-        }
-        resolve(base64);
-      };
-      img.onerror = () => reject(new Error('No se pudo cargar la imagen.'));
-      img.src = e.target.result;
-    };
-    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
-    reader.readAsDataURL(file);
-  });
-};
+import { fileToCompressedBase64, MAX_FILE_SIZE } from '../utils/imageCompression';
 
 const AdminProducts = () => {
   const {
@@ -56,7 +19,7 @@ const AdminProducts = () => {
     loading,
     error,
     getAllProducts,
-    getProductsByCategoryCached,
+    invalidateAllCaches,
   } = useProducts();
 
   // Estado del producto que se está editando (null = ningún)
@@ -71,6 +34,16 @@ const AdminProducts = () => {
   // Modo edición bulk: activa inputs inline de stock/disponibilidad
   const [bulkMode, setBulkMode] = useState(false);
   const [bulkEdits, setBulkEdits] = useState({});
+
+  // Búsqueda local para filtrar productos por nombre en el panel admin
+  const [adminSearch, setAdminSearch] = useState('');
+
+  // Productos filtrados por término de búsqueda (case-insensitive)
+  const filteredProducts = adminSearch.trim()
+    ? products.filter((p) =>
+        p.name.toLowerCase().includes(adminSearch.toLowerCase().trim())
+      )
+    : products;
 
   /*
    * Activa el modo bulk: inicializa el snapshot de ediciones
@@ -125,8 +98,7 @@ const AdminProducts = () => {
       setActionSuccess(`${updates.length} producto(s) actualizado(s).`);
       setBulkMode(false);
       setBulkEdits({});
-      getAllProducts(true);
-      CATEGORIES.forEach((cat) => getProductsByCategoryCached(cat, true));
+      invalidateAllCaches();
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al guardar bulk:', err);
@@ -219,9 +191,7 @@ const AdminProducts = () => {
       setEditForm(null);
       setImageFile(null);
       setImagePreview(null);
-      // Invalida el caché del contexto
-      getAllProducts(true);
-      CATEGORIES.forEach((cat) => getProductsByCategoryCached(cat, true));
+      invalidateAllCaches();
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al actualizar:', err);
@@ -241,8 +211,7 @@ const AdminProducts = () => {
     try {
       await deleteProduct(productId);
       setActionSuccess(`Producto "${productName}" eliminado.`);
-      getAllProducts(true);
-      CATEGORIES.forEach((cat) => getProductsByCategoryCached(cat, true));
+      invalidateAllCaches();
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al eliminar:', err);
@@ -255,7 +224,7 @@ const AdminProducts = () => {
     <div className="admin-products-container">
       <h2 className="admin-products-title">Administrar productos</h2>
 
-      {/* Controles del modo bulk: toggle + guardar */}
+      {/* Controles del modo bulk + buscador */}
       <div className="admin-bulk-controls">
         <button
           className={`admin-bulk-toggle-btn ${bulkMode ? 'active' : ''}`}
@@ -271,6 +240,24 @@ const AdminProducts = () => {
             disabled={submitting}
           >
             {submitting ? 'Guardando...' : 'Guardar cambios'}
+          </button>
+        )}
+
+        {/* Buscador de productos en el panel admin */}
+        <input
+          type="text"
+          className="admin-search-input"
+          placeholder="Buscar producto..."
+          value={adminSearch}
+          onChange={(e) => setAdminSearch(e.target.value)}
+        />
+        {adminSearch && (
+          <button
+            className="admin-search-clear"
+            onClick={() => setAdminSearch('')}
+            type="button"
+          >
+            Borrar
           </button>
         )}
       </div>
@@ -296,9 +283,16 @@ const AdminProducts = () => {
         </p>
       )}
 
+      {/* Sin resultados de búsqueda */}
+      {!loading && !error && products.length > 0 && filteredProducts.length === 0 && (
+        <p className="admin-products-empty">
+          No se encontraron productos para "{adminSearch}".
+        </p>
+      )}
+
       {!loading && !error && products.length > 0 && (
         <ul className="admin-products-list">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <li key={product.id} className="admin-product-item">
               {/* Modo edición inline */}
               {editingId === product.id && editForm ? (

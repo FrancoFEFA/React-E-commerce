@@ -24,7 +24,7 @@ import {
 import { db } from './config';
 
 // Categorías hardcodeadas: única fuente de verdad para NavBar y filtros
-const CATEGORIES = ['frutas', 'verduras', 'bebidas', 'otros'];
+export const CATEGORIES = ['frutas', 'verduras', 'bebidas', 'otros'];
 
 // Tamaño de página por defecto: controla cuántos productos trae cada consulta
 export const DEFAULT_PAGE_SIZE = 8;

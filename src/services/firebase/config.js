@@ -1,13 +1,12 @@
 /*
  * Inicialización de Firebase
  * Lee las credenciales desde variables de entorno (prefijo VITE_ de Vite)
- * Exporta las instancias de Firestore (db), Auth y Storage
+ * Exporta las instancias de Firestore (db) y Auth
  * Analytics se inicializa de forma segura solo si el entorno lo soporta
  */
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 
 // Configuración leída desde .env.local
@@ -27,7 +26,6 @@ const app = initializeApp(firebaseConfig);
 // Instancias exportadas para usar en los servicios
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-export const storage = getStorage(app);
 
 /*
  * Analytics: solo se inicializa si el navegador lo soporta
