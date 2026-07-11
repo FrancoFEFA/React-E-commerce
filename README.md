@@ -1,4 +1,4 @@
-# Verduleria Colon - E-commerce
+# Verduleria React E-commerce
 
 Esta es la entrega final de la aplicacion e-commerce para Verduleria Colon, una plataforma web desarrollada en React orientada a la compra de frutas, verduras y productos organicos frescos directamente al consumidor. En esta version final, el sistema se conecta a Firebase Firestore para la persistencia de datos en tiempo real e incorpora herramientas de gestion y administracion de productos.
 
