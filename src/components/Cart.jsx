@@ -36,8 +36,10 @@ const Cart = () => {
       <ul className="cart-list">
         {cart.map((item) => (
           <li key={item.id} className="cart-item">
-            {/* Imagen (emoji) y nombre del producto */}
-            <span className="cart-item-image">{item.image}</span>
+            {/* Imagen y nombre del producto */}
+            {item.image && (
+              <img src={item.image} alt={item.name} className="cart-item-img" />
+            )}
             <div className="cart-item-info">
               <h3 className="cart-item-name">{item.name}</h3>
               <p className="cart-item-price">${item.price} c/u</p>
@@ -79,7 +81,7 @@ const Cart = () => {
         </p>
       </div>
 
-      {/* Acciones: vaciar carrito o seguir comprando */}
+      {/* Acciones: vaciar carrito, seguir comprando o finalizar compra */}
       <div className="cart-actions">
         <button className="cart-clear-btn" onClick={clear}>
           Vaciar carrito
@@ -88,6 +90,11 @@ const Cart = () => {
           Seguir comprando
         </Link>
       </div>
+
+      {/* Botón de checkout: lleva al formulario de finalización de compra */}
+      <Link to="/checkout" className="cart-checkout-btn">
+        Finalizar compra
+      </Link>
     </div>
   );
 };

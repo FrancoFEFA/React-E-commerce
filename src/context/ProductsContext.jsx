@@ -10,7 +10,7 @@ import {
   getProductsByCategory,
   getCategories,
   getProductById,
-} from '../data/products';
+} from '../services/firebase/productsService';
 
 // Creación del contexto del catálogo
 const ProductsContext = createContext();

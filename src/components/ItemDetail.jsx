@@ -23,9 +23,11 @@ const ItemDetail = ({ product }) => {
 
   return (
     <div className="product-detail">
-      {/* Sección izquierda: emoji grande del producto */}
+      {/* Sección izquierda: imagen del producto */}
       <div className="product-detail-image">
-        <span>{product.image}</span>
+        {product.image && (
+          <img src={product.image} alt={product.name} className="product-detail-img" />
+        )}
       </div>
 
       {/* Sección derecha: información textual y contador de cantidad */}

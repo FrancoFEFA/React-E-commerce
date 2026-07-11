@@ -6,9 +6,6 @@ const CartWidget = () => {
   // Obtiene la cantidad total de items desde el contexto del carrito
   const { totalQuantity } = useCart();
 
-  // Si no hay items en el carrito, el widget no se renderiza (dismount)
-  if (totalQuantity === 0) return null;
-
   return (
     <div className="cart-widget">
       <Link to="/cart" className="cart-icon-wrapper">
@@ -27,8 +24,8 @@ const CartWidget = () => {
           <circle cx="20" cy="21" r="1" />
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
         </svg>
-        {/* Indicador de cantidad total de productos en el carrito */}
-        <span className="cart-badge">{totalQuantity}</span>
+        {/* Indicador de cantidad total de productos en el carrito (solo si hay items) */}
+        {totalQuantity > 0 && <span className="cart-badge">{totalQuantity}</span>}
       </Link>
     </div>
   );

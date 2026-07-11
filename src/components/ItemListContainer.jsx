@@ -45,7 +45,7 @@ const ItemListContainer = ({ greeting }) => {
   // En la ruta raíz, si hay un filtro seleccionado, se aplica localmente
   const displayProducts =
     !categoryId && selectedFilter !== 'todas'
-      ? products.filter((product) => product.category === selectedFilter)
+      ? products.filter((product) => product.category.includes(selectedFilter))
       : products;
 
   return (
