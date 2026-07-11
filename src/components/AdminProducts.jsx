@@ -99,6 +99,7 @@ const AdminProducts = () => {
       setBulkMode(false);
       setBulkEdits({});
       invalidateAllCaches();
+      getAllProducts(true);
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al guardar bulk:', err);
@@ -192,6 +193,7 @@ const AdminProducts = () => {
       setImageFile(null);
       setImagePreview(null);
       invalidateAllCaches();
+      getAllProducts(true);
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al actualizar:', err);
@@ -212,6 +214,7 @@ const AdminProducts = () => {
       await deleteProduct(productId);
       setActionSuccess(`Producto "${productName}" eliminado.`);
       invalidateAllCaches();
+      getAllProducts(true);
     } catch (err) {
       setActionError(`Error: ${err?.message || err?.code || 'Error desconocido'}`);
       console.error('Error al eliminar:', err);

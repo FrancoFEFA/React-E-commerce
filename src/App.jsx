@@ -21,11 +21,13 @@ import CreateProduct from "./components/CreateProduct";
 import AdminProducts from "./components/AdminProducts";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 import "./App.scss";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       {/*
         Providers anidados: UserProvider (auth) por fuera,
         ProductsProvider (catálogo) y CartProvider (carrito) por dentro

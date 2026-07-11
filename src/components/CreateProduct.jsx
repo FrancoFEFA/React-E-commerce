@@ -26,8 +26,8 @@ const CreateProduct = () => {
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  // Acceso al contexto para resetear el caché tras publicar un producto
-  const { invalidateAllCaches } = useProducts();
+  // Acceso al contexto para resetear el caché y re-fetchear tras publicar un producto
+  const { invalidateAllCaches, getAllProducts } = useProducts();
 
   /*
    * Maneja la selección de imagen: valida tamaño, guarda archivo y genera preview
@@ -108,6 +108,7 @@ const CreateProduct = () => {
       setSuccess(true);
       resetForm();
       invalidateAllCaches();
+      getAllProducts(true);
     } catch (err) {
       const errMsg = err?.message || err?.code || 'Error desconocido';
       setErrorMsg(`Error: ${errMsg}`);

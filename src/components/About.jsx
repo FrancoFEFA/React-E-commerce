@@ -4,7 +4,7 @@
  * Info de contacto con placeholders para reemplazar después
  */
 import { Link } from 'react-router-dom';
-import hero from '../assets/hero.png';
+import hero from '../assets/Nosotros-hero.png';
 
 const About = () => {
   return (
