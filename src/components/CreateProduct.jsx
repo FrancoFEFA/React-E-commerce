@@ -7,6 +7,7 @@
  */
 import { useState } from 'react';
 import { createProduct } from '../services/firebase/productsService';
+import { useProducts } from '../context/useProducts';
 
 // Tamaño máximo del archivo original antes de comprimir
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -70,7 +71,10 @@ const CreateProduct = () => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   // Categorías disponibles para el select (hardcodeadas, misma fuente que productsService)
-  const CATEGORIES = ['frutas', 'verduras', 'lacteos', 'bebidas'];
+  const CATEGORIES = ['frutas', 'verduras', 'bebidas', 'otros'];
+
+  // Acceso al contexto para resetear el caché tras publicar un producto
+  const { getAllProducts, getProductsByCategoryCached } = useProducts();
 
   /*
    * Maneja la selección de imagen: valida tamaño, guarda archivo y genera preview
@@ -147,9 +151,12 @@ const CreateProduct = () => {
         image,
       });
 
-      // Éxito: muestra mensaje y resetea el form
+      // Éxito: resetea el caché del contexto para que la home refleje el nuevo producto
       setSuccess(true);
       resetForm();
+      getAllProducts(true); // reset=true invalida el caché y recarga desde Firestore
+      // Invalida también los cachés de categoría que incluyan las categorías del nuevo producto
+      categoria.forEach((cat) => getProductsByCategoryCached(cat, true));
     } catch (err) {
       const errMsg = err?.message || err?.code || 'Error desconocido';
       setErrorMsg(`Error: ${errMsg}`);

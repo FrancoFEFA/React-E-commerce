@@ -1,0 +1,195 @@
+// Checkout: resumen, formulario y confirmacion
+@use "mixins" as m;
+
+.checkout-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.checkout-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 24px;
+}
+
+// Resumen de la compra
+.checkout-summary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.checkout-summary-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.checkout-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.checkout-summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+
+  @include m.mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+.checkout-summary-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkout-summary-img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.checkout-summary-subtotal {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.checkout-summary-total {
+  text-align: right;
+  font-family: "Outfit", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+// Formulario
+.checkout-form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: var(--shadow-sm);
+
+  @include m.mobile {
+    padding: 20px;
+  }
+}
+
+.checkout-error {
+  color: #e53935;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 12px 20px;
+  background: #fce4ec;
+  border-radius: var(--radius-sm);
+}
+
+.checkout-submit-btn {
+  margin-top: 8px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    @include m.lift-accent;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Pantalla de confirmacion
+.checkout-success {
+  text-align: center;
+  padding: 60px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.checkout-success-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.checkout-success-text {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+}
+
+.checkout-success-order {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 32px;
+}
+
+.checkout-success-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  @include m.btn-primary;
+  font-size: 1rem;
+}
+
+// Carrito vacio en checkout
+.checkout-empty {
+  text-align: center;
+  padding: 60px 24px;
+}
+
+.checkout-empty-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.checkout-empty-text {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 24px;
+}
+
+.checkout-empty-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  @include m.btn-primary;
+  font-size: 1rem;
+}

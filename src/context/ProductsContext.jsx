@@ -1,8 +1,13 @@
 /*
  * Contexto del catálogo de productos
- * Centraliza el acceso a productos y categorías con sistema de caché
+ * Centraliza el acceso a productos y categorías con sistema de caché y paginación
  * Evita refetcheos innecesarios al navegar entre categorías ya visitadas
  * Única fuente de verdad para categorías (NavBar e ItemListContainer consumen de aquí)
+ *
+ * Paginación con cursor (startAfter): controlada por hasMore y lastDoc
+ * - getAllProducts(reset): carga primera página (o resetea caché tras crear producto)
+ * - loadMoreProducts(): carga siguiente página concatenando al estado
+ * - getProductsByCategoryCached / loadMoreByCategory: idem por categoría
  */
 import { createContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
@@ -12,33 +17,34 @@ import {
   getProductById,
 } from '../services/firebase/productsService';
 
-// Creación del contexto del catálogo
 const ProductsContext = createContext();
 
-/*
- * Provider que envuelve la aplicación y expone el catálogo y sus métodos
- * Mantiene caché en refs (no disparan re-render) y estado reactivo para UI
- */
 export const ProductsProvider = ({ children }) => {
   // Estado reactivo consumido por los componentes
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasMore, setHasMore] = useState(false);
 
   /*
-   * Caché en refs: no disparan re-render al mutarse
-   * - cacheAll: array completo de productos | null
-   * - cacheByCategory: objeto { categoryId: [productos] }
-   * - cacheById: objeto { itemId: producto }
+   * Caché y cursores en refs: no disparan re-render
+   * - cacheAll: array acumulado de productos cargados hasta ahora | null
+   * - cacheByCategory: { categoryId: { products: [], lastDoc } }
+   * - cacheById: { itemId: producto } (lookup por id, sin paginación)
+   * - lastDocAll / lastDocByCategory: cursores para paginación con startAfter
    */
   const cacheAll = useRef(null);
   const cacheByCategory = useRef({});
   const cacheById = useRef({});
+  const lastDocAll = useRef(null);
+  const lastDocByCategory = useRef({});
+  // categoría activa para saber a qué caché Junior aplicar loadMore
+  const activeCategory = useRef(null);
 
   /*
    * Al montar el provider carga las categorías una sola vez
-   * Son la única fuente de verdad compartida por NavBar e ItemListContainer
+   * Única fuente de verdad compartida por NavBar e ItemListContainer
    */
   useEffect(() => {
     getCategories()
@@ -47,30 +53,32 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   /*
-   * Devuelve todos los productos
-   * Si ya están en caché, los setea sin llamar a la promesa (instantáneo)
-   * Si no, llama a getProducts(), los cachea y actualiza el estado
-   * useCallback: identidad estable para no re-disparar efectos consumidores
+   * Carga la primera página de productos (o resetea el caché si reset=true)
+   * reset=true se usa cuando el admin publica un producto nuevo y
+   * la home debe reflejar el catálogo actualizado
    */
-  const getAllProducts = useCallback(() => {
-    // Hit de caché: no hay fetch, no hay loading
-    if (cacheAll.current) {
+  const getAllProducts = useCallback((reset = false) => {
+    if (cacheAll.current && !reset) {
       setProducts(cacheAll.current);
+      setHasMore(lastDocAll.current !== null);
       setError(null);
       setLoading(false);
       return;
     }
 
-    // Miss de caché: dispara la promesa
     setLoading(true);
+    activeCategory.current = null;
     getProducts()
-      .then((data) => {
+      .then(({ products: data, lastDoc }) => {
         cacheAll.current = data;
+        lastDocAll.current = lastDoc;
         setProducts(data);
+        setHasMore(lastDoc !== null);
         setError(null);
       })
       .catch((err) => {
         setProducts([]);
+        setHasMore(false);
         setError('Ocurrió un error al cargar los productos.');
         console.error(err);
       })
@@ -78,21 +86,38 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   /*
-   * Devuelve los productos filtrados por categoría
-   * Cachea por categoría: una categoría ya vista se sirve instantáneamente
-   * Si la categoría no tiene productos, setea error
-   * useCallback: identidad estable para no re-disparar efectos consumidores
+   * Carga la siguiente página de productos y la concatena al estado/cache
+   * No hace nada si no hay más docs que cargar
    */
-  const getProductsByCategoryCached = useCallback((categoryId) => {
-    // Hit de caché: la categoría ya fue cargada antes
-    if (cacheByCategory.current[categoryId]) {
-      const cached = cacheByCategory.current[categoryId];
-      setProducts(cached);
-      // Categoría sin productos: se marca como error para avisar al usuario
-      if (cached.length === 0) {
-        setError(
-          `No se encontraron productos para la categoría "${categoryId}".`
-        );
+  const loadMoreProducts = useCallback(() => {
+    if (!lastDocAll.current) return;
+    setLoading(true);
+    getProducts(undefined, lastDocAll.current)
+      .then(({ products: data, lastDoc }) => {
+        const merged = [...(cacheAll.current || []), ...data];
+        cacheAll.current = merged;
+        lastDocAll.current = lastDoc;
+        setProducts(merged);
+        setHasMore(lastDoc !== null);
+      })
+      .catch((err) => {
+        setError('Ocurrió un error al cargar más productos.');
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  /*
+   * Carga la primera página de una categoría (o resetea caché si reset=true)
+   * Cachea por categoría: una categoría ya vista se sirve instantáneamente
+   */
+  const getProductsByCategoryCached = useCallback((categoryId, reset = false) => {
+    const cached = cacheByCategory.current[categoryId];
+    if (cached && !reset) {
+      setProducts(cached.products);
+      setHasMore(cached.lastDoc !== null);
+      if (cached.products.length === 0) {
+        setError(`No se encontraron productos para la categoría "${categoryId}".`);
       } else {
         setError(null);
       }
@@ -100,23 +125,47 @@ export const ProductsProvider = ({ children }) => {
       return;
     }
 
-    // Miss de caché: dispara la promesa y cachea el resultado
     setLoading(true);
+    activeCategory.current = categoryId;
     getProductsByCategory(categoryId)
-      .then((data) => {
-        cacheByCategory.current[categoryId] = data;
+      .then(({ products: data, lastDoc }) => {
+        cacheByCategory.current[categoryId] = { products: data, lastDoc };
+        lastDocByCategory.current[categoryId] = lastDoc;
         setProducts(data);
+        setHasMore(lastDoc !== null);
         if (data.length === 0) {
-          setError(
-            `No se encontraron productos para la categoría "${categoryId}".`
-          );
+          setError(`No se encontraron productos para la categoría "${categoryId}".`);
         } else {
           setError(null);
         }
       })
       .catch((err) => {
         setProducts([]);
+        setHasMore(false);
         setError('Ocurrió un error al cargar los productos.');
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  /*
+   * Carga la siguiente página de una categoría y la concatena
+   */
+  const loadMoreByCategory = useCallback((categoryId) => {
+    const lastDoc = lastDocByCategory.current[categoryId];
+    if (!lastDoc) return;
+    setLoading(true);
+    getProductsByCategory(categoryId, undefined, lastDoc)
+      .then(({ products: data, lastDoc: nextLastDoc }) => {
+        const cached = cacheByCategory.current[categoryId];
+        const merged = [...(cached?.products || []), ...data];
+        cacheByCategory.current[categoryId] = { products: merged, lastDoc: nextLastDoc };
+        lastDocByCategory.current[categoryId] = nextLastDoc;
+        setProducts(merged);
+        setHasMore(nextLastDoc !== null);
+      })
+      .catch((err) => {
+        setError('Ocurrió un error al cargar más productos.');
         console.error(err);
       })
       .finally(() => setLoading(false));
@@ -126,18 +175,14 @@ export const ProductsProvider = ({ children }) => {
    * Devuelve una Promise con un producto por su id
    * Mantiene la firma de promesa para que ItemDetailContainer conserve su
    * lógica de race condition (bandera cancelled)
-   * Si está en caché, resuelve inmediatamente sin llamar a la promesa
-   * useCallback: identidad estable para no re-disparar efectos consumidores
+   *
+   * Fix: usa itemId como string directo, NO parseInt (Firestore autogenera
+   * IDs alfanuméricos, parseInt devuelve NaN y rompe el caché)
    */
   const getProductByIdCached = useCallback((itemId) => {
-    const key = parseInt(itemId);
-
-    // Hit de caché: resuelve instantáneo con el producto cacheado
-    if (cacheById.current[key]) {
-      return Promise.resolve(cacheById.current[key]);
+    if (cacheById.current[itemId]) {
+      return Promise.resolve(cacheById.current[itemId]);
     }
-
-    // Miss de caché: llama a la promesa y cachea el resultado
     return getProductById(itemId).then((data) => {
       if (data) {
         cacheById.current[data.id] = data;
@@ -146,23 +191,21 @@ export const ProductsProvider = ({ children }) => {
     });
   }, []);
 
-  /*
-   * Value expuesto a los consumidores del contexto
-   * useMemo: el objeto value solo se recrea cuando cambian los estados reactivos
-   * Las funciones useCallback son estables, así que el value cambia solo
-   * cuando products/categories/loading/error cambian
-   */
+  // Value memoizado: solo cambia cuando los estados reactivos cambian
   const value = useMemo(
     () => ({
       products,
       categories,
       loading,
       error,
+      hasMore,
       getAllProducts,
+      loadMoreProducts,
       getProductsByCategoryCached,
+      loadMoreByCategory,
       getProductByIdCached,
     }),
-    [products, categories, loading, error, getAllProducts, getProductsByCategoryCached, getProductByIdCached]
+    [products, categories, loading, error, hasMore, getAllProducts, loadMoreProducts, getProductsByCategoryCached, loadMoreByCategory, getProductByIdCached]
   );
 
   return (

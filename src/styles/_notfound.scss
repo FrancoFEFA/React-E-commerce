@@ -1,0 +1,46 @@
+// Pagina 404
+@use "mixins" as m;
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 48px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.not-found-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.not-found-code {
+  font-family: "Outfit", sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  @include m.gradient-text;
+  line-height: 1.1;
+}
+
+.not-found-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.not-found-message {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.not-found-link {
+  padding: 12px 28px;
+  @include m.btn-primary;
+  font-size: 1rem;
+}

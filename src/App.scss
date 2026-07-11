@@ -1,0 +1,13 @@
+// Punto de entrada de estilos por componente
+// Cada partial agrupa los estilos de un componente
+@use "styles/navbar";
+@use "styles/item";
+@use "styles/cart";
+@use "styles/checkout";
+@use "styles/login";
+@use "styles/notfound";
+@use "styles/create-product";
+@use "styles/admin";
+@use "styles/home";
+@use "styles/about";
+@use "styles/footer";

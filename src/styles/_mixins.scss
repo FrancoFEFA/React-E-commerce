@@ -1,0 +1,57 @@
+// Mixins reutilizables para no repetir codigo
+
+// Breakpoints responsive
+@mixin mobile {
+  @media (max-width: 768px) { @content; }
+}
+
+@mixin small {
+  @media (max-width: 480px) { @content; }
+}
+
+// Texto con gradiente (clip al texto)
+@mixin gradient-text($gradient: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-light))) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Hover: leve elevacion con sombra del primary
+@mixin lift($offset: -2px) {
+  transform: translateY(#{$offset});
+  box-shadow: var(--shadow-glow);
+}
+
+// Hover: elevacion con sombra del accent (naranja)
+@mixin lift-accent($offset: -2px) {
+  transform: translateY(#{$offset});
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+}
+
+// Boton con gradiente primary
+@mixin btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    @include lift;
+  }
+}
+
+// Input con foco del primary
+@mixin input-focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
+}
+
+// Tarjeta con hover elevado
+@mixin card-lift($offset: -6px, $shadow: var(--shadow-lg)) {
+  transform: translateY(#{$offset});
+  box-shadow: #{$shadow};
+  border-color: var(--color-primary-light);
+}

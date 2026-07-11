@@ -1,0 +1,131 @@
+// Pagina Nosotros: historia, valores y contacto
+@use "mixins" as m;
+
+.about {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.about-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.about-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 24px;
+}
+
+.about-img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.about-section {
+  margin-bottom: 48px;
+}
+
+.about-section-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+// Tarjetas de valores
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-value-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 28px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    @include m.card-lift(-4px, var(--shadow-md));
+  }
+}
+
+.about-value-emoji {
+  font-size: 2.5rem;
+}
+
+.about-value-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.about-value-text {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+// Bloque de contacto
+.about-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.about-contact-item {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+// CTA al final
+.about-cta {
+  text-align: center;
+  padding: 20px 0 40px;
+}
+
+.about-cta-btn {
+  display: inline-block;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    @include m.lift;
+  }
+}

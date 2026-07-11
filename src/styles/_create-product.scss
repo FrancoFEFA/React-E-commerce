@@ -1,0 +1,194 @@
+// Formularios de admin: crear producto y editar/eliminar
+@use "mixins" as m;
+
+// Crear producto
+.create-product-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.create-product-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.create-product-success {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 12px 20px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.create-product-error {
+  color: #e53935;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 12px 20px;
+  background: #fce4ec;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.create-product-form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+
+  @include m.mobile {
+    padding: 20px;
+  }
+}
+
+// Campos de formulario compartidos
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  background: var(--color-bg);
+  transition: all var(--transition-normal);
+
+  &:focus {
+    @include m.input-focus;
+  }
+}
+
+.form-textarea {
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  background: var(--color-bg);
+  resize: vertical;
+  transition: all var(--transition-normal);
+
+  &:focus {
+    @include m.input-focus;
+  }
+}
+
+.form-input-file {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.form-image-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+}
+
+// Toggles de categoria (crear producto)
+.form-category-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-toggle-btn {
+  padding: 8px 18px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text-secondary);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+// Toggle generico (destacado)
+.toggle-btn {
+  padding: 10px 24px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    border-color: var(--color-primary-light);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+.create-product-submit-btn {
+  margin-top: 8px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    @include m.lift-accent;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

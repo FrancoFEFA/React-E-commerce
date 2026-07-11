@@ -4,6 +4,7 @@
  * Usa useParams() para leer el parámetro :categoryId de la URL
  * En la ruta raíz muestra la sección de bienvenida + catálogo completo
  * En rutas de categoría filtra los productos correspondientes
+ * Soporta paginación con botón "Cargar más" controlado por hasMore del contexto
  * El filtro local (selectedFilter) es estado de UI y queda local, no en contexto
  */
 import { useState, useEffect } from 'react';
@@ -12,18 +13,23 @@ import { useProducts } from '../context/useProducts';
 import ItemList from './ItemList';
 import CategoryFilter from './CategoryFilter';
 
-const ItemListContainer = ({ greeting }) => {
-  // Filtro local de categoría en la ruta raíz: es estado de UI, no compartido
+const ItemListContainer = () => {
+  // Filtro local de categoría en la vista de catálogo: es estado de UI, no compartido
   const [selectedFilter, setSelectedFilter] = useState('todas');
+  // Término de búsqueda: filtra client-side por nombre (case-insensitive)
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Consumo del contexto del catálogo
+  // Consumo del contexto del catálogo (incluye paginación)
   const {
     products,
     categories,
     loading,
     error,
+    hasMore,
     getAllProducts,
+    loadMoreProducts,
     getProductsByCategoryCached,
+    loadMoreByCategory,
   } = useProducts();
 
   // Extrae el parámetro categoryId de la URL (undefined en la ruta raíz)
@@ -42,25 +48,69 @@ const ItemListContainer = ({ greeting }) => {
     }
   }, [categoryId, getAllProducts, getProductsByCategoryCached]);
 
-  // En la ruta raíz, si hay un filtro seleccionado, se aplica localmente
-  const displayProducts =
-    !categoryId && selectedFilter !== 'todas'
-      ? products.filter((product) => product.category.includes(selectedFilter))
-      : products;
+  /*
+   * Handler del botón "Cargar más"
+   * Delega al método del contexto según la vista activa (home o categoría)
+   */
+  const handleLoadMore = () => {
+    if (categoryId) {
+      loadMoreByCategory(categoryId);
+    } else {
+      loadMoreProducts();
+    }
+  };
+
+  // Filtra por categoría (si hay filtro local activo) y por término de búsqueda
+  let displayProducts = products;
+  if (!categoryId && selectedFilter !== 'todas') {
+    displayProducts = displayProducts.filter((product) =>
+      product.category.includes(selectedFilter)
+    );
+  }
+  if (searchTerm.trim()) {
+    const term = searchTerm.toLowerCase().trim();
+    displayProducts = displayProducts.filter((product) =>
+      product.name.toLowerCase().includes(term)
+    );
+  }
+
+  /*
+   * El botón "Cargar más" solo se muestra si hay más docs en el servidor,
+   * no hay carga/error en curso, no hay filtro local ni búsqueda activa
+   * (paginación server-side + filtros client-side mezclados son inconsistentes)
+   */
+  const showLoadMore =
+    hasMore && !loading && !error && !searchTerm.trim() &&
+    (categoryId || selectedFilter === 'todas');
 
   return (
     <div className="item-list-container">
-      {/* Sección de bienvenida: solo se muestra en la ruta raíz */}
-      {greeting && !categoryId && (
-        <div className="welcome-section">
-          <div className="welcome-icon">ImgEj</div>
-          <h1 className="welcome-title">{greeting}</h1>
-          <p className="welcome-subtitle">
-            Frutas y verduras frescas directo del campo a tu mesa. Calidad,
-            frescura y los mejores precios todos los días.
-          </p>
+      {/* Título del catálogo: se muestra en /productos, oculto en vista de categoría */}
+      {!categoryId && (
+        <div className="category-title">
+          <h2>Todos los productos</h2>
         </div>
       )}
+
+      {/* Barra de búsqueda: filtra productos por nombre client-side */}
+      <div className="search-bar-container">
+        <input
+          type="text"
+          className="search-bar-input"
+          placeholder="Buscar productos..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {searchTerm && (
+          <button
+            className="search-bar-clear"
+            onClick={() => setSearchTerm('')}
+            type="button"
+          >
+            Borrar
+          </button>
+        )}
+      </div>
 
       {/* Filtro local de categorías: solo en la ruta raíz */}
       {!categoryId && !loading && !error && categories.length > 0 && (
@@ -94,6 +144,15 @@ const ItemListContainer = ({ greeting }) => {
 
       {/* Éxito: renderiza la grilla de productos usando el componente presentacional */}
       {!loading && !error && <ItemList products={displayProducts} />}
+
+      {/* Botón de paginación: cargar más productos desde el servidor */}
+      {showLoadMore && (
+        <div className="load-more-container">
+          <button className="load-more-btn" onClick={handleLoadMore}>
+            Cargar más productos
+          </button>
+        </div>
+      )}
     </div>
   );
 };

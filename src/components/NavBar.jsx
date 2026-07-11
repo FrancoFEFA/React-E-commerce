@@ -3,15 +3,13 @@
  * Usa NavLink de React Router en lugar de <a> para navegación sin recarga
  * La clase .active se aplica automáticamente al enlace de la página actual
  */
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CartWidget from "./CartWidget";
-import logo from "../assets/logo.png";
-import { useProducts } from '../context/useProducts';
+import NavDropdown from "./NavDropdown";
+import logo from "../assets/icon-verdu-colon.png";
 import { useUser } from '../context/useUser';
 
 const NavBar = () => {
-  // Categorías desde el contexto: única fuente de verdad para NavBar y filtros
-  const { categories } = useProducts();
   // Estado del usuario desde el contexto de auth
   const { user, logout } = useUser();
   const navigate = useNavigate();
@@ -30,25 +28,22 @@ const NavBar = () => {
       <div className="navbar-container">
         {/* Logo de la tienda: redirige al inicio usando Link de React Router */}
         <Link to="/" className="navbar-brand">
-          <img src={logo} alt="Verdulería Fresh Logo" className="navbar-logo" />
-          <span className="navbar-title">Verdulería Fresh</span>
+          <img src={logo} alt="Verdulería Colón Logo" className="navbar-logo" />
+          <span className="navbar-title">Verdulería Colón</span>
         </Link>
 
-        {/* Menú de navegación con NavLink a cada categoría */}
+        {/* Menú de navegación: link Nosotros + dropdown Productos */}
         <ul className="navbar-links">
-          {categories.map((category) => (
-            <li key={category}>
-              <NavLink
-                to={`/category/${category}`}
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? 'active' : ''}`
-                }
-              >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </NavLink>
-            </li>
-          ))}
+          {/* Link a la sección Nosotros */}
+          <li>
+            <Link to="/nosotros" className="nav-link">
+              Nosotros
+            </Link>
+          </li>
         </ul>
+
+        {/* Dropdown de Productos con sub-links a categorías */}
+        <NavDropdown />
 
         {/* Sección de usuario: login/logout/admin según estado de auth */}
         <div className="navbar-user">
@@ -67,11 +62,16 @@ const NavBar = () => {
                 Hola, {user.displayName || user.email}
               </span>
 
-              {/* Link para publicar productos: solo visible si es admin */}
+              {/* Links admin: solo visibles si el user es admin */}
               {user.isAdmin && (
-                <Link to="/admin/create-product" className="navbar-admin-btn">
-                  Publicar producto
-                </Link>
+                <>
+                  <Link to="/admin/productos" className="navbar-admin-btn">
+                    Administrar
+                  </Link>
+                  <Link to="/admin/create-product" className="navbar-admin-btn">
+                    Publicar
+                  </Link>
+                </>
               )}
 
               {/* Botón para cerrar sesión */}

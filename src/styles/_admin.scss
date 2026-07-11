@@ -1,0 +1,202 @@
+// Panel admin: listado y edicion inline de productos
+@use "mixins" as m;
+
+.admin-products-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.admin-products-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 24px;
+}
+
+.admin-products-error {
+  color: #e53935;
+  font-size: 0.95rem;
+  padding: 12px 20px;
+  background: #fce4ec;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.admin-products-success {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  padding: 12px 20px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.admin-products-empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  padding: 40px 0;
+}
+
+.admin-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-product-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-primary-light);
+  }
+}
+
+// Fila de producto en modo vista
+.admin-product-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+.admin-product-img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  min-width: 56px;
+}
+
+.admin-product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-product-name {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-product-meta {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-edit-btn {
+  padding: 8px 16px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    color: #fff;
+    border-color: transparent;
+  }
+}
+
+.admin-delete-btn {
+  padding: 8px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: #e53935;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    background: #fce4ec;
+    border-color: #e53935;
+  }
+}
+
+.admin-edit-btn:disabled,
+.admin-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+// Formulario de edicion inline
+.admin-edit-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.admin-edit-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-edit-cancel {
+  padding: 6px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-text-muted);
+  }
+}
+
+.admin-edit-save-btn {
+  margin-top: 8px;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover:not(:disabled) {
+    @include m.lift;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
