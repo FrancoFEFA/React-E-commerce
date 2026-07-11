@@ -64,3 +64,22 @@ Esta es la entrega final de la aplicacion e-commerce para Verduleria Colon, una 
 - Implementacion de la creacion de ordenes de compra con control de stock transaccional en la base de datos.
 - Creacion del sistema de autenticacion de usuarios.
 - Diseño e integracion del panel de administracion para mutaciones de catalogo (crear, editar, borrar y edicion rapida en lote) con politicas de refresco de cache automaticas para evitar datos desactualizados en las vistas.
+
+## Capturas de pantalla
+
+### Autenticacion de usuarios
+![Autenticacion de usuarios](public/AuthenticationCap.png)
+Muestra el panel de Firebase Authentication con la lista de usuarios registrados en la aplicacion, incluyendo cuentas de clientes y cuentas de administrador.
+
+### Coleccion de usuarios en Firestore
+![Coleccion de usuarios](public/FirestoreUsersCap.png)
+Estructura de la coleccion de usuarios en Firestore, donde se vinculan los datos del perfil (nombre y correo electronico) con sus permisos correspondientes.
+
+### Definicion de rol administrador
+![Rol administrador](public/FirestoreAdminUserCap.png)
+Detalle del documento de un usuario administrador en Firestore, configurado con el campo booleano isAdmin en true para habilitar el acceso al panel de administracion.
+
+### Registro de ordenes de compra
+![Registro de ordenes](public/FirestoreOrders.png)
+Detalle de una orden de compra generada en la coleccion de pedidos de Firestore, registrando el desglose de productos (con sus imagenes comprimidas), cantidades, total de la transaccion, identificador del usuario y estado del pedido.
+
