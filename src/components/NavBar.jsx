@@ -3,7 +3,7 @@
  * Usa NavLink de React Router en lugar de <a> para navegación sin recarga
  * La clase .active se aplica automáticamente al enlace de la página actual
  */
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import CartWidget from "./CartWidget";
 import NavDropdown from "./NavDropdown";
 import logo from "../assets/icon-verdu-colon.png";
@@ -13,6 +13,7 @@ const NavBar = () => {
   // Estado del usuario desde el contexto de auth
   const { user, logout } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
 
   /*
    * Cierra sesión y redirige al inicio
@@ -23,11 +24,17 @@ const NavBar = () => {
     navigate('/');
   };
 
+  const handleLinkClick = (to) => () => {
+    if (location.pathname === to) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo de la tienda: redirige al inicio usando Link de React Router */}
-        <Link to="/" className="navbar-brand">
+        <Link to="/" className="navbar-brand" onClick={handleLinkClick('/')}>
           <img src={logo} alt="Verdulería Colón Logo" className="navbar-logo" />
           <span className="navbar-title">Verdulería Colón</span>
         </Link>
@@ -36,7 +43,7 @@ const NavBar = () => {
         <ul className="navbar-links">
           {/* Link a la sección Nosotros */}
           <li>
-            <Link to="/nosotros" className="nav-link">
+            <Link to="/nosotros" className="nav-link" onClick={handleLinkClick('/nosotros')}>
               Nosotros
             </Link>
           </li>

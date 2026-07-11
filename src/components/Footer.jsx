@@ -3,10 +3,18 @@
  * Se renderiza en App.jsx abajo de Routes para aparecer en todas las vistas
  * Contiene links de navegación, contacto y redes (placeholders por ahora)
  */
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/icon-verdu-colon.png';
 
 const Footer = () => {
+  const location = useLocation();
+
+  const handleLinkClick = (to) => () => {
+    if (location.pathname === to) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -25,9 +33,9 @@ const Footer = () => {
         <div className="footer-col">
           <h3 className="footer-heading">Navegación</h3>
           <ul className="footer-links">
-            <li><Link to="/" className="footer-link">Inicio</Link></li>
-            <li><Link to="/productos" className="footer-link">Productos</Link></li>
-            <li><Link to="/nosotros" className="footer-link">Nosotros</Link></li>
+            <li><Link to="/" className="footer-link" onClick={handleLinkClick('/')}>Inicio</Link></li>
+            <li><Link to="/productos" className="footer-link" onClick={handleLinkClick('/productos')}>Productos</Link></li>
+            <li><Link to="/nosotros" className="footer-link" onClick={handleLinkClick('/nosotros')}>Nosotros</Link></li>
           </ul>
         </div>
 

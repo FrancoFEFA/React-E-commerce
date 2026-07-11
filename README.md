@@ -1,31 +1,66 @@
-# Verduleria Ecommerce
+# Verduleria Colon - E-commerce
 
-Aplicacion e-commerce de verduleria construida entrega 2
+Esta es la entrega final de la aplicacion e-commerce para Verduleria Colon, una plataforma web desarrollada en React orientada a la compra de frutas, verduras y productos organicos frescos directamente al consumidor. En esta version final, el sistema se conecta a Firebase Firestore para la persistencia de datos en tiempo real e incorpora herramientas de gestion y administracion de productos.
 
 ## Como iniciar
 
-1. Clonar el repositorio
-2. Instalar dependencias con `npm install`
-3. Ejecutar `npm run dev`
-4. Abrir en el navegador `http://localhost:5173`
+### Requisitos previos
 
-## Funcionalidades implementadas
+- Node.js (version 18 o superior)
+- Una cuenta de Firebase con un proyecto activo (para base de datos Firestore y autenticacion)
 
-*Luego de la primera entrega, le agregue las siguientes implementaciones sobre el mismo proyecto
-las cuales consiten en:
+### Instalacion y ejecucion
 
-- Navegacion con React Router (inicio, categoria, detalle de product, 404)
-- Barra de navegacion con enlaces a distintas categorias (Frutas, Verduras) y widget de carrito
-- Vista de catalogo con la carga asincronica de productos (todos o filtrados por categoria)
-- Vista al detalle de producto individual
-- Un contador de stock con control de cantidad
-- Estados de carga, error y vacio en cada contenedor
-- Datos mock con promesas simulando llamadas a API
-- Pagina 404 para rutas no encontradas
+1. Instalar las dependencias del proyecto:
+   ```bash
+   npm install
+   ```
 
-## Tecnologias
+2. Configurar las variables de entorno:
+   Crear un archivo `.env.local` en la raiz del proyecto y completar con las credenciales de Firebase:
+   ```env
+   VITE_FIREBASE_API_KEY=tu_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=tu_auth_domain
+   VITE_FIREBASE_PROJECT_ID=tu_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=tu_storage_bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=tu_sender_id
+   VITE_FIREBASE_APP_ID=tu_app_id
+   ```
 
-- React 19
-- React Router 7
-- Vite 8
-- ESLint
+3. Iniciar el servidor de desarrollo local:
+   ```bash
+   npm run dev
+   ```
+
+4. Abrir en el navegador la direccion:
+   `http://localhost:5173`
+
+## Caracteristicas principales
+
+- Catalogo interactivo: Navegacion por categorias de productos (Frutas, Verduras, Bebidas, Otros) y busqueda dinamica.
+- Gestion de carrito de compras: Control de cantidades, calculo automatico de subtotales y total de la compra.
+- Proceso de checkout: Registro de datos de cliente, verificacion de stock en tiempo real y generacion de orden de compra en base de datos.
+- Sistema de autenticacion: Registro e inicio de sesion de usuarios con Firebase Authentication.
+- Panel de administracion protegido: Panel exclusivo para administradores que permite crear, editar, eliminar y actualizar el stock de forma masiva (bulk).
+- Compresion de imagenes incorporada: Reduccion de tamaño de imagenes en el cliente mediante compresion a formato JPEG base64 (400x400) antes de ser guardadas directamente en Firestore.
+- Optimizacion del rendimiento: Implementacion de cache en memoria mediante Context API para evitar consultas repetitivas innecesarias a la base de datos al cambiar de vista.
+
+## Evolucion del proyecto por entregas
+
+### Primera entrega: Estructura base
+- Inicializacion del proyecto bajo el entorno de Vite.
+- Creacion del sistema de componentes modulares reutilizables.
+- Maquetacion inicial del NavBar (barra de navegacion), CartWidget (icono del carrito) e ItemListContainer (contenedor de presentacion).
+
+### Segunda entrega: Navegacion y simulacion asincronica
+- Integracion de React Router para la navegacion dinamica de multiples paginas sin recargar el navegador.
+- Carga asincrona de informacion simulando consultas de red con Promesas.
+- Implementacion de filtros de categorias dinamicos e ItemDetailContainer (vista en detalle del producto).
+- Incorporacion de logica para el control de stock (ItemCount).
+
+### Tercera entrega (Entrega final): Integracion y persistencia real
+- Migracion de datos locales (mock) a una base de datos en la nube en tiempo real mediante Firebase Firestore.
+- Desarrollo de la logica completa del carrito de compras (CartContext) que persiste el estado en la aplicacion.
+- Implementacion de la creacion de ordenes de compra con control de stock transaccional en la base de datos.
+- Creacion del sistema de autenticacion de usuarios.
+- Diseño e integracion del panel de administracion para mutaciones de catalogo (crear, editar, borrar y edicion rapida en lote) con politicas de refresco de cache automaticas para evitar datos desactualizados en las vistas.

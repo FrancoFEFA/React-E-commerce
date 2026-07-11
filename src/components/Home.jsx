@@ -7,14 +7,20 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../context/useProducts';
 import ItemList from './ItemList';
-import hero from '../assets/hero.png';
+import hero from '../assets/Nosotros-hero.png';
+
+// Importación de las imágenes para cada categoría
+import imgFrutas from '../assets/cat_frutas.png';
+import imgVerduras from '../assets/cat_verduras.png';
+import imgBebidas from '../assets/cat_bebidas.png';
+import imgOtros from '../assets/cat_otros.png';
 
 // Datos visuales de las categorías para el grid del Home
 const CATEGORY_CARDS = [
-  { id: 'frutas', emoji: '🍎', label: 'Frutas' },
-  { id: 'verduras', emoji: '🥬', label: 'Verduras' },
-  { id: 'bebidas', emoji: '🥤', label: 'Bebidas' },
-  { id: 'otros', emoji: '🧺', label: 'Otros' },
+  { id: 'frutas', image: imgFrutas, label: 'Frutas' },
+  { id: 'verduras', image: imgVerduras, label: 'Verduras' },
+  { id: 'bebidas', image: imgBebidas, label: 'Bebidas' },
+  { id: 'otros', image: imgOtros, label: 'Otros' },
 ];
 
 const Home = () => {
@@ -58,8 +64,10 @@ const Home = () => {
               to={`/productos/${cat.id}`}
               className="home-category-card"
             >
-              <span className="home-category-emoji">{cat.emoji}</span>
-              <span className="home-category-label">{cat.label}</span>
+              <img src={cat.image} alt={cat.label} className="home-category-img" />
+              <div className="home-category-overlay">
+                <span className="home-category-label">{cat.label}</span>
+              </div>
             </Link>
           ))}
         </div>
