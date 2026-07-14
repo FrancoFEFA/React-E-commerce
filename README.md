@@ -7,7 +7,9 @@ Esta es la entrega final de la aplicacion e-commerce para Verduleria Colon, una 
 ### Requisitos previos
 
 - Node.js (version 18 o superior)
-- Una cuenta de Firebase con un proyecto activo (para base de datos Firestore y autenticacion)
+- Npm
+- Una cuenta de Firebase con un proyecto activo, inciar proyecto 
+  para base de datos Firestore y autenticacion
 
 ### Instalacion y ejecucion
 
