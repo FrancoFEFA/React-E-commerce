@@ -75,6 +75,78 @@
   }
 }
 
+// Card Frescura imagen (tierra cultivada)
+.about-value-card--frescura {
+  position: relative;
+  background-image: url('/Nosotros/tierra.jpg');
+  background-size: cover;
+  background-position: center;
+  border: none;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .about-value-title,
+  .about-value-text {
+    color: #fff;
+  }
+}
+
+// Card Confianza imagen (apretón de manos)
+.about-value-card--confianza {
+  position: relative;
+  background-image: url('/Nosotros/confianza.jpg');
+  background-size: cover;
+  background-position: center;
+  border: none;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .about-value-title,
+  .about-value-text {
+    color: #fff;
+  }
+}
+
+// Card Delivery imagen (reparto)
+.about-value-card--delivery {
+  position: relative;
+  background-image: url('/Nosotros/delivey.png');
+  background-size: cover;
+  background-position: center;
+  border: none;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .about-value-title,
+  .about-value-text {
+    color: #fff;
+  }
+}
+
 .about-value-emoji {
   font-size: 2.5rem;
 }

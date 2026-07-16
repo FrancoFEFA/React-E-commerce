@@ -30,22 +30,19 @@ const About = () => {
       <section className="about-section">
         <h2 className="about-section-title">Misión y valores</h2>
         <div className="about-values">
-          <div className="about-value-card">
-            <span className="about-value-emoji">🌱</span>
+          <div className="about-value-card about-value-card--frescura">
             <h3 className="about-value-title">Frescura</h3>
             <p className="about-value-text">
-              Seleccionamos cada producto en su punto óptimo de maduración.
+              Seleccionamos cada producto en su mejor punto de maduración para que llegue fresco a tu hogar.
             </p>
           </div>
-          <div className="about-value-card">
-            <span className="about-value-emoji">🤝</span>
+          <div className="about-value-card about-value-card--confianza">
             <h3 className="about-value-title">Confianza</h3>
             <p className="about-value-text">
               Trabajamos con productores de confianza y procesos transparentes.
             </p>
           </div>
-          <div className="about-value-card">
-            <span className="about-value-emoji">🚚</span>
+          <div className="about-value-card about-value-card--delivery">
             <h3 className="about-value-title">Delivery</h3>
             <p className="about-value-text">
               Llevamos tu pedido a la puerta de tu casa, fresco y a tiempo.
