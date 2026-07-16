@@ -1,6 +1,6 @@
 // Componente de widget de carrito que muestra el icono y el contador
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/useCart';
+import { useCart } from '../../context/useCart';
 
 const CartWidget = () => {
   // Obtiene la cantidad total de items desde el contexto del carrito

@@ -7,9 +7,9 @@
  */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/useCart';
-import { useUser } from '../context/useUser';
-import { createOrder } from '../services/firebase/ordersService';
+import { useCart } from '../../context/useCart';
+import { useUser } from '../../context/useUser';
+import { createOrder } from '../../services/firebase/ordersService';
 
 const Checkout = () => {
   // Datos del comprador

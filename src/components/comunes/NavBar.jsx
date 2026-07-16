@@ -6,8 +6,8 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import CartWidget from "./CartWidget";
 import NavDropdown from "./NavDropdown";
-import logo from "../assets/icon-verdu-colon.png";
-import { useUser } from '../context/useUser';
+import logo from "../../assets/icon-verdu-colon.png";
+import { useUser } from '../../context/useUser';
 
 const NavBar = () => {
   // Estado del usuario desde el contexto de auth

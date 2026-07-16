@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# AI / herramientas
+.claude/
+.codegraph/
+.gemini/
+.mcp.json
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

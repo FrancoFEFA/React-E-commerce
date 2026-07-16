@@ -6,7 +6,7 @@
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useUser } from '../context/useUser';
+import { useUser } from '../../context/useUser';
 
 const Login = () => {
   // Estado del formulario

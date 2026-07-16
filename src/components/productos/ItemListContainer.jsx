@@ -9,7 +9,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useProducts } from '../context/useProducts';
+import { useProducts } from '../../context/useProducts';
 import ItemList from './ItemList';
 import CategoryFilter from './CategoryFilter';
 

@@ -6,7 +6,7 @@
  */
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useProducts } from '../context/useProducts';
+import { useProducts } from '../../context/useProducts';
 import ItemDetail from './ItemDetail';
 
 const ItemDetailContainer = () => {

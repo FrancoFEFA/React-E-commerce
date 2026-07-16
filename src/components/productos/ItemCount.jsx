@@ -4,7 +4,7 @@
  * Los botones se deshabilitan visualmente al alcanzar los límites
  */
 import { useState } from 'react';
-import { useCart } from '../context/useCart';
+import { useCart } from '../../context/useCart';
 
 const ItemCount = ({ product, stock, initial = 1, onAdd }) => {
   // Estado local para la cantidad seleccionada por el usuario

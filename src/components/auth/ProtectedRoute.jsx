@@ -6,7 +6,7 @@
  * - Si pasa las validaciones: renderiza children
  */
 import { Navigate } from 'react-router-dom';
-import { useUser } from '../context/useUser';
+import { useUser } from '../../context/useUser';
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
   const { user, loading } = useUser();

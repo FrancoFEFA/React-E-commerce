@@ -4,7 +4,7 @@
  * Contiene links de navegación, contacto y redes (placeholders por ahora)
  */
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/icon-verdu-colon.png';
+import logo from '../../assets/icon-verdu-colon.png';
 
 const Footer = () => {
   const location = useLocation();
@@ -36,6 +36,7 @@ const Footer = () => {
             <li><Link to="/" className="footer-link" onClick={handleLinkClick('/')}>Inicio</Link></li>
             <li><Link to="/productos" className="footer-link" onClick={handleLinkClick('/productos')}>Productos</Link></li>
             <li><Link to="/nosotros" className="footer-link" onClick={handleLinkClick('/nosotros')}>Nosotros</Link></li>
+            <li><Link to="/politicas" className="footer-link" onClick={handleLinkClick('/politicas')}>Políticas</Link></li>
           </ul>
         </div>
 

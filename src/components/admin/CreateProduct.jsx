@@ -6,9 +6,9 @@
  * Visible solo para usuarios con isAdmin: true (wrappado por ProtectedRoute)
  */
 import { useState } from 'react';
-import { createProduct, CATEGORIES } from '../services/firebase/productsService';
-import { useProducts } from '../context/useProducts';
-import { fileToCompressedBase64, MAX_FILE_SIZE } from '../utils/imageCompression';
+import { createProduct, CATEGORIES } from '../../services/firebase/productsService';
+import { useProducts } from '../../context/useProducts';
+import { fileToCompressedBase64, MAX_FILE_SIZE } from '../../utils/imageCompression';
 
 const CreateProduct = () => {
   // Estado del formulario

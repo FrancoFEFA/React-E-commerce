@@ -8,20 +8,21 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserProvider } from "./context/UserContext";
 import { ProductsProvider } from "./context/ProductsContext";
 import { CartProvider } from "./context/CartContext";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import ItemListContainer from "./components/ItemListContainer";
-import ItemDetailContainer from "./components/ItemDetailContainer";
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout";
-import Login from "./components/Login";
-import About from "./components/About";
-import CreateProduct from "./components/CreateProduct";
-import AdminProducts from "./components/AdminProducts";
-import ProtectedRoute from "./components/ProtectedRoute";
-import NotFound from "./components/NotFound";
-import ScrollToTop from "./components/ScrollToTop";
+import NavBar from "./components/comunes/NavBar";
+import Footer from "./components/comunes/Footer";
+import Home from "./components/productos/Home";
+import ItemListContainer from "./components/productos/ItemListContainer";
+import ItemDetailContainer from "./components/productos/ItemDetailContainer";
+import Cart from "./components/carrito/Cart";
+import Checkout from "./components/carrito/Checkout";
+import Login from "./components/auth/Login";
+import About from "./components/informacion/About";
+import Policies from "./components/informacion/Policies";
+import CreateProduct from "./components/admin/CreateProduct";
+import AdminProducts from "./components/admin/AdminProducts";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import NotFound from "./components/error/NotFound";
+import ScrollToTop from "./components/comunes/ScrollToTop";
 import "./App.scss";
 
 function App() {
@@ -52,6 +53,9 @@ function App() {
 
                 {/* Sección Nosotros: historia, misión y contacto */}
                 <Route path="/nosotros" element={<About />} />
+
+                {/* Sección Políticas: privacidad, devolución y términos */}
+                <Route path="/politicas" element={<Policies />} />
 
                 {/* Ruta del carrito: desglose de la compra */}
                 <Route path="/cart" element={<Cart />} />

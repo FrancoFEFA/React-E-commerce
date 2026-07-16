@@ -9,9 +9,9 @@ import {
   updateProduct,
   deleteProduct,
   CATEGORIES,
-} from '../services/firebase/productsService';
-import { useProducts } from '../context/useProducts';
-import { fileToCompressedBase64, MAX_FILE_SIZE } from '../utils/imageCompression';
+} from '../../services/firebase/productsService';
+import { useProducts } from '../../context/useProducts';
+import { fileToCompressedBase64, MAX_FILE_SIZE } from '../../utils/imageCompression';
 
 const AdminProducts = () => {
   const {
