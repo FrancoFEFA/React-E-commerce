@@ -18,6 +18,8 @@ dist-ssr
 .gemini/
 .mcp.json
 .env
+opencode.jsonc
+AGENTS.md
 
 # Editor directories and files
 .vscode/*
