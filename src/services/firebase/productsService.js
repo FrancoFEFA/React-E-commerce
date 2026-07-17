@@ -4,7 +4,11 @@
  *
  * Optimizaciones aplicadas:
  * - limit() en cada consulta para no traer toda la colección
- * - startAfter(lastDoc) para paginación por cursor
+ * - startAfter(lastDoc) para paginación eficiente
+ * - getDoc() para traer un solo producto por id (1 lectura)
+ * - normalización de campos para desacoplar la app de la estructura de Firestore
+ *
+ * Consideraciones:
  * - Categorías hardcodeadas como única fuente de verdad
  */
 import {

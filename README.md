@@ -70,19 +70,19 @@ Esta es la entrega final de la aplicacion e-commerce para Verduleria Colon, una 
 ## Capturas de pantalla
 
 ### Autenticacion de usuarios
-![Autenticacion de usuarios](public/AuthenticationCap.png)
+![Autenticacion de usuarios](public/Readme/AuthenticationCap.png)
 Muestra el panel de Firebase Authentication con la lista de usuarios registrados en la aplicacion, incluyendo cuentas de clientes y cuentas de administrador.
 
 ### Coleccion de usuarios en Firestore
-![Coleccion de usuarios](public/FirestoreUsersCap.png)
+![Coleccion de usuarios](public/Readme/FirestoreUsersCap.png)
 Estructura de la coleccion de usuarios en Firestore, donde se vinculan los datos del perfil (nombre y correo electronico) con sus permisos correspondientes.
 
 ### Definicion de rol administrador
-![Rol administrador](public/FirestoreAdminUserCap.png)
+![Rol administrador](public/Readme/FirestoreAdminUserCap.png)
 Detalle del documento de un usuario administrador en Firestore, configurado con el campo booleano isAdmin en true para habilitar el acceso al panel de administracion.
 
 ### Registro de ordenes de compra
-![Registro de ordenes](public/FirestoreOrders.png)
+![Registro de ordenes](public/Readme/FirestoreOrders.png)
 Detalle de una orden de compra generada en la coleccion de pedidos de Firestore, registrando el desglose de productos (con sus imagenes comprimidas), cantidades, total de la transaccion, identificador del usuario y estado del pedido.
 
 
@@ -165,6 +165,102 @@ Verduleria Ecommerce
 │  │  ├─ _mixins.scss
 │  │  ├─ _navbar.scss
 │  │  ├─ _notfound.scss
+│  │  └─ _variables.scss
+│  └─ utils
+│     └─ imageCompression.js
+└─ vite.config.js
+
+```
+```
+Verduleria Ecommerce
+├─ AGENTS.md
+├─ eslint.config.js
+├─ index.html
+├─ opencode.jsonc
+├─ package-lock.json
+├─ package.json
+├─ public
+│  ├─ AuthenticationCap.png
+│  ├─ favicon.png
+│  ├─ FirestoreAdminUserCap.png
+│  ├─ FirestoreOrders.png
+│  ├─ FirestoreUsersCap.png
+│  └─ Nosotros
+│     ├─ confianza.jpg
+│     ├─ delivey.png
+│     └─ tierra.jpg
+├─ README.md
+├─ src
+│  ├─ App.jsx
+│  ├─ App.scss
+│  ├─ assets
+│  │  ├─ cat_bebidas.png
+│  │  ├─ cat_frutas.png
+│  │  ├─ cat_otros.png
+│  │  ├─ cat_verduras.png
+│  │  ├─ icon-verdu-colon.png
+│  │  └─ Nosotros-hero.png
+│  ├─ components
+│  │  ├─ admin
+│  │  │  ├─ AdminProducts.jsx
+│  │  │  └─ CreateProduct.jsx
+│  │  ├─ auth
+│  │  │  ├─ Login.jsx
+│  │  │  └─ ProtectedRoute.jsx
+│  │  ├─ carrito
+│  │  │  ├─ Cart.jsx
+│  │  │  └─ Checkout.jsx
+│  │  ├─ comunes
+│  │  │  ├─ CartWidget.jsx
+│  │  │  ├─ Footer.jsx
+│  │  │  ├─ NavBar.jsx
+│  │  │  ├─ NavDropdown.jsx
+│  │  │  └─ ScrollToTop.jsx
+│  │  ├─ error
+│  │  │  └─ NotFound.jsx
+│  │  ├─ informacion
+│  │  │  ├─ About.jsx
+│  │  │  └─ Policies.jsx
+│  │  └─ productos
+│  │     ├─ CategoryFilter.jsx
+│  │     ├─ Home.jsx
+│  │     ├─ Item.jsx
+│  │     ├─ ItemCount.jsx
+│  │     ├─ ItemDetail.jsx
+│  │     ├─ ItemDetailContainer.jsx
+│  │     ├─ ItemList.jsx
+│  │     └─ ItemListContainer.jsx
+│  ├─ context
+│  │  ├─ CartContext.jsx
+│  │  ├─ ProductsContext.jsx
+│  │  ├─ useCart.js
+│  │  ├─ useProducts.js
+│  │  ├─ UserContext.jsx
+│  │  └─ useUser.js
+│  ├─ main.jsx
+│  ├─ services
+│  │  └─ firebase
+│  │     ├─ authService.js
+│  │     ├─ config.js
+│  │     ├─ ordersService.js
+│  │     └─ productsService.js
+│  ├─ styles
+│  │  ├─ index.scss
+│  │  ├─ _about.scss
+│  │  ├─ _admin.scss
+│  │  ├─ _animations.scss
+│  │  ├─ _base.scss
+│  │  ├─ _cart.scss
+│  │  ├─ _checkout.scss
+│  │  ├─ _create-product.scss
+│  │  ├─ _footer.scss
+│  │  ├─ _home.scss
+│  │  ├─ _item.scss
+│  │  ├─ _login.scss
+│  │  ├─ _mixins.scss
+│  │  ├─ _navbar.scss
+│  │  ├─ _notfound.scss
+│  │  ├─ _politicas.scss
 │  │  └─ _variables.scss
 │  └─ utils
 │     └─ imageCompression.js
