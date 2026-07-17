@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../context/useProducts';
 import ItemList from './ItemList';
-import hero from '../../assets/Nosotros-hero.png';
 
 // Importación de las imágenes para cada categoría
 import imgFrutas from '../../assets/cat_frutas.png';
@@ -42,7 +41,7 @@ const Home = () => {
     <div className="home">
       {/* Hero: imagen + título + subtítulo + CTA */}
       <section className="home-hero">
-        <img src={hero} alt="Verdulería Colón" className="home-hero-img" />
+        <img src="/About/Nosotros-hero.png" alt="Verdulería Colón" className="home-hero-img" />
         <div className="home-hero-overlay">
           <h1 className="home-hero-title">Verdulería Colón</h1>
           <p className="home-hero-subtitle">

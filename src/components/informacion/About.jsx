@@ -4,7 +4,6 @@
  * Info de contacto con placeholders para reemplazar después
  */
 import { Link } from 'react-router-dom';
-import hero from '../../assets/Nosotros-hero.png';
 
 const About = () => {
   return (
@@ -12,7 +11,7 @@ const About = () => {
       {/* Sección principal: título e imagen */}
       <section className="about-hero">
         <h1 className="about-title">Sobre Nosotros</h1>
-        <img src={hero} alt="Verdulería Colón" className="about-img" />
+        <img src="/About/Nosotros-hero.png" alt="Verdulería Colón" className="about-img" />
       </section>
 
       {/* Historia */}
